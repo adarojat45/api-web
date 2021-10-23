@@ -1,5 +1,6 @@
 const PostModel = require("../models/postModel");
 const PostTransformer = require("../transformers/postTransformer");
+const algolia = require("../services/algolia");
 
 class PostController {
 	static findAll = async (req, res, next) => {
@@ -41,6 +42,25 @@ class PostController {
 			const postTransform = PostTransformer.detail(post);
 			res.status(200).json(postTransform);
 		} catch (error) {
+			next(error);
+		}
+	};
+
+	static search = async (req, res, next) => {
+		try {
+			const { q } = req.query;
+			const index = algolia.initIndex("posts");
+			const { hits } = await index.search(q);
+			const posts = hits.map((hit) => {
+				const { _highlightResult, objectID, ...rest } = hit;
+				return rest;
+			});
+			res.status(200).json(posts);
+		} catch (error) {
+			console.log(
+				"🚀 ~ file: postController.js ~ line 57 ~ PostController ~ search= ~ error",
+				error
+			);
 			next(error);
 		}
 	};
