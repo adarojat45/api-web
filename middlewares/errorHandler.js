@@ -9,6 +9,16 @@ const errorHandler = (err, req, res, next) => {
 			name = err.name;
 			messages = [err.message];
 			break;
+		case "ApiError":
+			code = err.status;
+			name = err.name;
+			messages = [err.message];
+			break;
+		case "RetryError":
+			code = 403;
+			name = err.name;
+			messages = [err.message];
+			break;
 
 		default:
 			messages = ["Internal server error"];
