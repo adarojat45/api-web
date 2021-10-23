@@ -9,7 +9,7 @@ let posts = [];
 
 beforeAll(async () => {
 	let postsPayload = [];
-	for (let i = 0; i < 20; i++) {
+	for (let i = 0; i < 15; i++) {
 		const payload = {
 			name: `Post name ${i}`,
 			slug: `post-name-${i}`,
@@ -37,21 +37,76 @@ describe("Post test cases", () => {
 			request(app)
 				.get("/posts")
 				.then(({ body, status }) => {
+					const { posts } = body;
 					expect(status).toBe(200);
-					expect(body).toEqual(expect.any(Array));
-					expect(body.length).toBe(20);
-					expect(body[0]).toHaveProperty("id");
-					expect(body[0]).toHaveProperty("name");
-					expect(body[0]).toHaveProperty("excerpt");
-					expect(body[0]).toHaveProperty("tags");
-					expect(body[0].tags).toEqual(expect.any(Array));
-					expect(body[0].tags[0]).toEqual(expect.any(String));
-					expect(body[0]).toHaveProperty("isMarkdown");
-					expect(body[0]).toHaveProperty("categories");
-					expect(body[0].categories).toEqual(expect.any(Array));
-					expect(body[0]).toHaveProperty("isActive");
-					expect(body[0]).toHaveProperty("isDeleted");
-					expect(body[0]).not.toHaveProperty("description");
+					expect(posts).toEqual(expect.any(Array));
+					expect(posts.length).toBe(10);
+					expect(posts[0]).toHaveProperty("id");
+					expect(posts[0]).toHaveProperty("name");
+					expect(posts[0]).toHaveProperty("excerpt");
+					expect(posts[0]).toHaveProperty("tags");
+					expect(posts[0].tags).toEqual(expect.any(Array));
+					expect(posts[0].tags[0]).toEqual(expect.any(String));
+					expect(posts[0]).toHaveProperty("isMarkdown");
+					expect(posts[0]).toHaveProperty("categories");
+					expect(posts[0].categories).toEqual(expect.any(Array));
+					expect(posts[0]).toHaveProperty("isActive");
+					expect(posts[0]).toHaveProperty("isDeleted");
+					expect(posts[0]).not.toHaveProperty("description");
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
+
+		test("[success - 200] GET /posts?page=2 should be return an array of object with some object property and length equal 5", (done) => {
+			request(app)
+				.get("/posts?page=2")
+				.then(({ body, status }) => {
+					const { posts } = body;
+					expect(status).toBe(200);
+					expect(posts).toEqual(expect.any(Array));
+					expect(posts.length).toBe(5);
+					expect(posts[0]).toHaveProperty("id");
+					expect(posts[0]).toHaveProperty("name");
+					expect(posts[0]).toHaveProperty("excerpt");
+					expect(posts[0]).toHaveProperty("tags");
+					expect(posts[0].tags).toEqual(expect.any(Array));
+					expect(posts[0].tags[0]).toEqual(expect.any(String));
+					expect(posts[0]).toHaveProperty("isMarkdown");
+					expect(posts[0]).toHaveProperty("categories");
+					expect(posts[0].categories).toEqual(expect.any(Array));
+					expect(posts[0]).toHaveProperty("isActive");
+					expect(posts[0]).toHaveProperty("isDeleted");
+					expect(posts[0]).not.toHaveProperty("description");
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
+
+		test("[success - 200] GET /posts?size=13 with size should be return an array of object with some object property and length to equal 13", (done) => {
+			request(app)
+				.get("/posts?size=13")
+				.then(({ body, status }) => {
+					const { posts } = body;
+					expect(status).toBe(200);
+					expect(posts).toEqual(expect.any(Array));
+					expect(posts.length).toBe(13);
+					expect(posts[0]).toHaveProperty("id");
+					expect(posts[0]).toHaveProperty("name");
+					expect(posts[0]).toHaveProperty("excerpt");
+					expect(posts[0]).toHaveProperty("tags");
+					expect(posts[0].tags).toEqual(expect.any(Array));
+					expect(posts[0].tags[0]).toEqual(expect.any(String));
+					expect(posts[0]).toHaveProperty("isMarkdown");
+					expect(posts[0]).toHaveProperty("categories");
+					expect(posts[0].categories).toEqual(expect.any(Array));
+					expect(posts[0]).toHaveProperty("isActive");
+					expect(posts[0]).toHaveProperty("isDeleted");
+					expect(posts[0]).not.toHaveProperty("description");
 					done();
 				})
 				.catch((err) => {
