@@ -16,6 +16,10 @@ class PostController {
 	static findOne = async (req, res, next) => {
 		try {
 			const { slug } = req.params;
+			console.log(
+				"🚀 ~ file: postController.js ~ line 19 ~ PostController ~ findOne= ~ slug",
+				slug
+			);
 			const post = await PostModel.findOne({ slug: slug });
 			if (!post)
 				throw {
