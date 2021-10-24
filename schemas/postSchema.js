@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
+// const mongoosePaginate = require("mongoose-paginate-v2");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const { Schema } = mongoose;
 
@@ -52,6 +53,6 @@ const postSchema = new Schema({
 	},
 });
 
-postSchema.plugin(mongoosePaginate);
+postSchema.plugin(aggregatePaginate);
 
 module.exports = postSchema;

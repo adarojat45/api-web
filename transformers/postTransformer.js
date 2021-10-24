@@ -3,7 +3,7 @@ const { morphism } = require("morphism");
 class PostTransformer {
 	static list = (source) => {
 		const schema = {
-			id: "id",
+			id: "_id",
 			name: "name",
 			slug: "slug",
 			excerpt: "excerpt",
