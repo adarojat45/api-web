@@ -89,7 +89,7 @@ describe("Post test cases", () => {
 
 		test("[success - 200] GET /posts?size=13 with size should be return an array of object with some object property and length to equal 13", (done) => {
 			request(app)
-				.get("/posts?size=13")
+				.get("/posts?limit=13")
 				.then(({ body, status }) => {
 					const { posts } = body;
 					expect(status).toBe(200);

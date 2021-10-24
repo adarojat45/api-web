@@ -6,10 +6,21 @@ const Post = mongoose.model("Post", PostSchema);
 class PostModel {
 	static paginate = async (query = {}, option = {}) => {
 		try {
-			return await Post.paginate(
-				{ ...query, isDeleted: false, isActive: true },
-				option
-			);
+			const postAggregate = Post.aggregate([
+				{ $match: { ...query, isDeleted: false, isActive: true } },
+				{
+					$lookup: {
+						from: "categories",
+						localField: "_categories",
+						foreignField: "_id",
+						as: "_categories",
+					},
+				},
+			]);
+			return await Post.aggregatePaginate(postAggregate, {
+				...option,
+				sort: { createdAt: -1 },
+			});
 		} catch (error) {
 			throw error;
 		}

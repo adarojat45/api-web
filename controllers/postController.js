@@ -5,20 +5,19 @@ const algolia = require("../services/algolia");
 class PostController {
 	static findAll = async (req, res, next) => {
 		try {
-			let limit = 10;
 			let skip = 0;
-			let { page, size, tags } = req.query;
+			let { page, limit = 10, tags } = req.query;
 
 			let query = {};
 			let option = {
 				page,
-				limit,
+				limit: 10,
 				skip,
 			};
 
 			if (!page) option = { ...option, page: 1 };
 
-			if (size) option = { ...option, limit: size };
+			if (limit) option = { ...option, limit: limit };
 
 			if (page) option = { ...option, skip: limit * page - limit };
 
@@ -28,8 +27,8 @@ class PostController {
 			const { docs, ...metaData } = post;
 			const postsTransform = PostTransformer.list(docs);
 			res.status(200).json({
-				posts: postsTransform,
 				metaData,
+				posts: postsTransform,
 			});
 		} catch (error) {
 			next(error);
