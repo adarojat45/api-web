@@ -7,22 +7,29 @@ class PostController {
 		try {
 			let limit = 10;
 			let skip = 0;
+			let { page, size, tags } = req.query;
 
-			let { page, size } = req.query;
+			let query = {};
+			let option = {
+				page,
+				limit,
+				skip,
+			};
 
-			if (!page) page = 1;
+			if (!page) option = { ...option, page: 1 };
 
-			if (size) limit = size;
+			if (size) option = { ...option, limit: size };
 
-			if (page) skip = limit * page - limit;
+			if (page) option = { ...option, skip: limit * page - limit };
 
-			const condition = {};
-			const posts = await PostModel.findAll(condition, {}, limit, skip);
-			const postsTransform = PostTransformer.list(posts);
+			if (tags) query = { ...query, tags };
+
+			const post = await PostModel.paginate(query, option);
+			const { docs, ...metaData } = post;
+			const postsTransform = PostTransformer.list(docs);
 			res.status(200).json({
 				posts: postsTransform,
-				page,
-				size,
+				metaData,
 			});
 		} catch (error) {
 			next(error);
@@ -57,10 +64,6 @@ class PostController {
 			});
 			res.status(200).json(posts);
 		} catch (error) {
-			console.log(
-				"🚀 ~ file: postController.js ~ line 57 ~ PostController ~ search= ~ error",
-				error
-			);
 			next(error);
 		}
 	};

@@ -4,16 +4,12 @@ const PostSchema = require("../schemas/postSchema");
 const Post = mongoose.model("Post", PostSchema);
 
 class PostModel {
-	static findAll = async (condition = {}, filter = {}, limit = 10, skip = 0) => {
+	static paginate = async (query = {}, option = {}) => {
 		try {
-			return await Post.find({
-				...condition,
-				isDeleted: false,
-				isActive: true,
-			})
-				.populate("_categories")
-				.limit(+limit)
-				.skip(skip);
+			return await Post.paginate(
+				{ ...query, isDeleted: false, isActive: true },
+				option
+			);
 		} catch (error) {
 			throw error;
 		}
