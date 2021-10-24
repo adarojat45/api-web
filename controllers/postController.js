@@ -64,10 +64,6 @@ class PostController {
 			});
 			res.status(200).json(posts);
 		} catch (error) {
-			console.log(
-				"🚀 ~ file: postController.js ~ line 57 ~ PostController ~ search= ~ error",
-				error
-			);
 			next(error);
 		}
 	};
