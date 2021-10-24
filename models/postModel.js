@@ -4,7 +4,7 @@ const PostSchema = require("../schemas/postSchema");
 const Post = mongoose.model("Post", PostSchema);
 
 class PostModel {
-	static findAll = async (query = {}, option = {}) => {
+	static paginate = async (query = {}, option = {}) => {
 		try {
 			return await Post.paginate(
 				{ ...query, isDeleted: false, isActive: true },

@@ -24,7 +24,7 @@ class PostController {
 
 			if (tags) query = { ...query, tags };
 
-			const post = await PostModel.findAll(query, option);
+			const post = await PostModel.paginate(query, option);
 			const { docs, ...metaData } = post;
 			const postsTransform = PostTransformer.list(docs);
 			res.status(200).json({
