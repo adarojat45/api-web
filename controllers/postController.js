@@ -45,6 +45,7 @@ class PostController {
 					message: "Post not found",
 					code: 404,
 				};
+			await PostModel.update({ _id: post._id }, { views: post.views + 1 });
 			const postTransform = PostTransformer.detail(post);
 			res.status(200).json(postTransform);
 		} catch (error) {
