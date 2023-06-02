@@ -15,6 +15,6 @@ app.get("/", (_, res) => {
 	});
 });
 
-app.use(router);
+//app.use(router);
 
 module.exports = app;
