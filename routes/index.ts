@@ -1,11 +1,11 @@
 import { Router } from "express";
-import CategoryController from "../controllers/categoryController";
 import errorHandler from "../middlewares/errorHandler";
+import categoryRouter from "./categoryRouter";
 
 const router = Router();
 
-router.get("/categories", CategoryController.getCategories);
-router.get("/categories/:id", CategoryController.getCategory);
+router.use("/categories", categoryRouter);
+
 router.use(errorHandler);
 
 export default router;
