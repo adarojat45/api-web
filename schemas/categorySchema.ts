@@ -1,13 +1,5 @@
-import { Schema } from "mongoose";
-
-export interface CategoryInterface {
-  name: string;
-  slug: string;
-  isActive: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { Schema, Types } from "mongoose";
+import { CategoryInterface } from "../interfaces/categoryInterface";
 
 const categorySchema = new Schema<CategoryInterface>({
   name: {
@@ -20,7 +12,7 @@ const categorySchema = new Schema<CategoryInterface>({
     required: true,
     unique: true,
   },
-  //_posts: [{ type: Types.ObjectId, ref: "Post" }],
+  _posts: [{ type: Types.ObjectId, ref: "Post" }],
   createdAt: {
     type: Date,
     default: () => new Date(Date.now()),

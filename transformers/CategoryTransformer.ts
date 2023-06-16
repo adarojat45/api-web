@@ -1,48 +1,17 @@
 import { morphism, createSchema } from "morphism";
-
-interface InputListInterface {
-  _id: string;
-  name: string;
-  slug: string;
-  isActive: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface OutputListInterface {
-  id: string;
-  name: string;
-  slug: string;
-  isActive: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface InputDetailInterface {
-  _id: string;
-  name: string;
-  slug: string;
-  isActive: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface OutputDetailInterface {
-  id: string;
-  name: string;
-  slug: string;
-  isActive: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import {
+  CategoryListInputInterface,
+  CategoyListOutputInterface,
+  CategoryDetailInputInterface,
+  CategoryDetailOutputInterface,
+} from "../interfaces/categoryInterface";
 
 class CategoryTransformer {
-  static list(payload: InputListInterface[]) {
-    const schema = createSchema<OutputListInterface, InputListInterface>({
+  static list(payload: CategoryListInputInterface[]) {
+    const schema = createSchema<
+      CategoyListOutputInterface,
+      CategoryListInputInterface
+    >({
       id: "_id",
       name: "name",
       slug: "slug",
@@ -54,11 +23,15 @@ class CategoryTransformer {
     return morphism(schema, payload);
   }
 
-  static detail(payload: InputDetailInterface) {
-    const schema = createSchema<OutputDetailInterface, InputDetailInterface>({
+  static detail(payload: CategoryDetailInputInterface) {
+    const schema = createSchema<
+      CategoryDetailOutputInterface,
+      CategoryDetailInputInterface
+    >({
       id: "_id",
       name: "name",
       slug: "slug",
+      posts: "_posts",
       isActive: "isActive",
       isDeleted: "isDeleted",
       createdAt: "createdAt",
