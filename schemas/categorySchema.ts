@@ -20,7 +20,7 @@ const categorySchema = new Schema<CategoryInterface>({
     required: true,
     unique: true,
   },
-  // _posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+  _posts: [{ type: Types.ObjectId, ref: "Post" }],
   createdAt: {
     type: Date,
     default: () => new Date(Date.now()),
