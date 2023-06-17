@@ -1,4 +1,8 @@
-import { ObjectId, Types } from "mongoose";
+import { ObjectId } from "mongoose";
+import {
+  CategoryInterface,
+  CategoryListOutputInterface,
+} from "./categoryInterface";
 
 export interface PostInterface {
   _id: ObjectId;
@@ -13,7 +17,18 @@ export interface PostInterface {
   views: number;
   createdAt: Date;
   updatedAt: Date;
-  _categories: [{ type: Types.ObjectId; ref: "Category" }];
+  _categories: CategoryInterface[];
+}
+
+export interface PostListInputInterface {
+  _id: ObjectId;
+  name: string;
+  slug: string;
+  excerpt: string;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  _categories: CategoryInterface[];
 }
 
 export interface PostListOutputInterface {
@@ -24,4 +39,5 @@ export interface PostListOutputInterface {
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
+  categories?: CategoryListOutputInterface[];
 }

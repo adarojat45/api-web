@@ -1,15 +1,17 @@
 import { morphism, createSchema } from "morphism";
 import {
   CategoryListInputInterface,
-  CategoyListOutputInterface,
+  CategoryListOutputInterface,
   CategoryDetailInputInterface,
   CategoryDetailOutputInterface,
 } from "../interfaces/categoryInterface";
 
 class CategoryTransformer {
-  static list(payload: CategoryListInputInterface[]) {
+  static list(
+    payload: CategoryListInputInterface[]
+  ): CategoryListOutputInterface[] {
     const schema = createSchema<
-      CategoyListOutputInterface,
+      CategoryListOutputInterface,
       CategoryListInputInterface
     >({
       id: "_id",
@@ -23,7 +25,9 @@ class CategoryTransformer {
     return morphism(schema, payload);
   }
 
-  static detail(payload: CategoryDetailInputInterface) {
+  static detail(
+    payload: CategoryDetailInputInterface
+  ): CategoryDetailOutputInterface {
     const schema = createSchema<
       CategoryDetailOutputInterface,
       CategoryDetailInputInterface

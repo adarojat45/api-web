@@ -22,7 +22,7 @@ export interface CategoryListInputInterface {
   updatedAt: Date;
 }
 
-export interface CategoyListOutputInterface {
+export interface CategoryListOutputInterface {
   id: ObjectId;
   name: string;
   slug: string;
@@ -47,7 +47,7 @@ export interface CategoryDetailOutputInterface {
   id: ObjectId;
   name: string;
   slug: string;
-  posts: PostListOutputInterface[];
+  posts?: PostListOutputInterface[];
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
