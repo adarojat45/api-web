@@ -18,7 +18,7 @@ class PostTransformer {
       categories: ({ _categories }) => {
         return _categories.map((category) => {
           const {
-            _id,
+            _id: id,
             name,
             slug,
             isActive,
@@ -28,7 +28,7 @@ class PostTransformer {
           } = category;
 
           return {
-            id: _id,
+            id,
             name,
             slug,
             isActive,
