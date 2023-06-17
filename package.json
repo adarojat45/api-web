@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/adarojat45/api-web#readme",
   "dependencies": {
+    "@types/mongoose-aggregate-paginate-v2": "^1.0.9",
     "algoliasearch": "^4.11.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",

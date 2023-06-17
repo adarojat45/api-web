@@ -1,5 +1,6 @@
 import { Schema, Types } from "mongoose";
 import { PostInterface } from "../interfaces/postInterfaces";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const postSchema = new Schema<PostInterface>({
   name: {
@@ -48,5 +49,7 @@ const postSchema = new Schema<PostInterface>({
   },
   _categories: [{ type: Types.ObjectId, ref: "Category" }],
 });
+
+postSchema.plugin(aggregatePaginate);
 
 export default postSchema;
