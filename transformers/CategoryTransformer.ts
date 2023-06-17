@@ -31,7 +31,7 @@ class CategoryTransformer {
       id: "_id",
       name: "name",
       slug: "slug",
-      posts: "_posts",
+      //     posts: "_posts",
       isActive: "isActive",
       isDeleted: "isDeleted",
       createdAt: "createdAt",

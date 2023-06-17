@@ -7,6 +7,7 @@ class CategoryController {
     try {
       const categories = await CategoryModel.findAll();
       const categoriesTransformed = CategoryTransformer.list(categories);
+
       res.status(200).json(categoriesTransformed);
     } catch (err) {
       next(err);
@@ -20,9 +21,9 @@ class CategoryController {
 
       if (category) {
         const categoryTransformed = CategoryTransformer.detail(category);
-        res.status(200).json(categoryTransformed);
+        return res.status(200).json(categoryTransformed);
       } else {
-        res.status(200).json({});
+        return res.status(404).json(null);
       }
     } catch (err) {
       next(err);

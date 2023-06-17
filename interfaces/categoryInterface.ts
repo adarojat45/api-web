@@ -35,7 +35,7 @@ export interface CategoryDetailInputInterface {
   _id: string;
   name: string;
   slug: string;
-  _posts: PostListOutputInterface[];
+  //_posts: PostListOutputInterface[];
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -46,7 +46,7 @@ export interface CategoryDetailOutputInterface {
   id: string;
   name: string;
   slug: string;
-  posts: PostListOutputInterface[];
+  // posts: PostListOutputInterface[];
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
