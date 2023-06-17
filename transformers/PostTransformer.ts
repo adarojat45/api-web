@@ -17,14 +17,24 @@ class PostTransformer {
       tags: "tags",
       categories: ({ _categories }) => {
         return _categories.map((category) => {
+          const {
+            _id,
+            name,
+            slug,
+            isActive,
+            isDeleted,
+            createdAt,
+            updatedAt,
+          } = category;
+
           return {
-            id: category._id,
-            name: category.name,
-            slug: category.slug,
-            isActive: category.isActive,
-            isDeleted: category.isDeleted,
-            createdAt: category.createdAt,
-            updatedAt: category.updatedAt,
+            id: _id,
+            name,
+            slug,
+            isActive,
+            isDeleted,
+            createdAt,
+            updatedAt,
           };
         });
       },

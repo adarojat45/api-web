@@ -41,14 +41,15 @@ class CategoryTransformer {
       updatedAt: "updatedAt",
       posts: ({ _posts }) => {
         return _posts.map((post) => {
+          const { _id, name, slug, excerpt, tags, createdAt, updatedAt } = post;
           return {
-            id: post._id,
-            name: post.name,
-            slug: post.slug,
-            excerpt: post.excerpt,
-            tags: post.tags,
-            createdAt: post.createdAt,
-            updatedAt: post.updatedAt,
+            id: _id,
+            name,
+            slug,
+            excerpt,
+            tags,
+            createdAt,
+            updatedAt,
           };
         });
       },
