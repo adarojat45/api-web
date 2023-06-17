@@ -1,18 +1,19 @@
-import { PostListOutputInterface } from "./postInterfaces";
-import { Types } from "mongoose";
+import { PostInterface, PostListOutputInterface } from "./postInterfaces";
+import { ObjectId } from "mongoose";
 
 export interface CategoryInterface {
+  _id: ObjectId;
   name: string;
   slug: string;
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  _posts: [{ type: Types.ObjectId; ref: "Post" }];
+  _posts: PostInterface[];
 }
 
 export interface CategoryListInputInterface {
-  _id: string;
+  _id: ObjectId;
   name: string;
   slug: string;
   isActive: boolean;
@@ -22,7 +23,7 @@ export interface CategoryListInputInterface {
 }
 
 export interface CategoyListOutputInterface {
-  id: string;
+  id: ObjectId;
   name: string;
   slug: string;
   isActive: boolean;
@@ -32,10 +33,10 @@ export interface CategoyListOutputInterface {
 }
 
 export interface CategoryDetailInputInterface {
-  _id: string;
+  _id: ObjectId;
   name: string;
   slug: string;
-  //_posts: PostListOutputInterface[];
+  _posts: PostInterface[];
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -43,10 +44,10 @@ export interface CategoryDetailInputInterface {
 }
 
 export interface CategoryDetailOutputInterface {
-  id: string;
+  id: ObjectId;
   name: string;
   slug: string;
-  // posts: PostListOutputInterface[];
+  posts: PostListOutputInterface[];
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;

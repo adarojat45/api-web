@@ -31,11 +31,23 @@ class CategoryTransformer {
       id: "_id",
       name: "name",
       slug: "slug",
-      //     posts: "_posts",
       isActive: "isActive",
       isDeleted: "isDeleted",
       createdAt: "createdAt",
       updatedAt: "updatedAt",
+      posts: ({ _posts }) => {
+        return _posts.map((post) => {
+          return {
+            id: post._id,
+            name: post.name,
+            slug: post.slug,
+            excerpt: post.excerpt,
+            tags: post.tags,
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt,
+          };
+        });
+      },
     });
 
     return morphism(schema, payload);

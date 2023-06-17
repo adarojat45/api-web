@@ -19,12 +19,15 @@ class CategoryController {
       const { id } = req.params;
       const category = await CategoryModel.findOne(id);
 
-      if (category) {
-        const categoryTransformed = CategoryTransformer.detail(category);
-        return res.status(200).json(categoryTransformed);
-      } else {
-        return res.status(404).json(null);
-      }
+      if (!category)
+        throw {
+          name: "NotFound",
+          code: 404,
+          message: "Category not found",
+        };
+
+      const categoryTransformed = CategoryTransformer.detail(category);
+      return res.status(200).json(categoryTransformed);
     } catch (err) {
       next(err);
     }

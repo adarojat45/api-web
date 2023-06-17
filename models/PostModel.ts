@@ -10,7 +10,7 @@ class PostModel {
       return await Post.find({
         isActive: true,
         isDeleted: false,
-      });
+      }).populate("_categories");
     } catch (err) {
       throw err;
     }

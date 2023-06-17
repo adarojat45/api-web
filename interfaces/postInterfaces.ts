@@ -1,6 +1,7 @@
-import { Types } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 
 export interface PostInterface {
+  _id: ObjectId;
   name: string;
   slug: string;
   excerpt: string;
@@ -16,9 +17,11 @@ export interface PostInterface {
 }
 
 export interface PostListOutputInterface {
-  id: string;
+  id: ObjectId;
   name: string;
   slug: string;
   excerpt: string;
   tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
