@@ -5,7 +5,7 @@ import { CategoryInterface } from "../interfaces/categoryInterface";
 const Category = model<CategoryInterface>("Category", CategorySchema);
 
 class CategoryModel {
-  static async findAll() {
+  static async findAll(): Promise<CategoryInterface[]> {
     try {
       return await Category.find({
         isActive: true,
@@ -16,7 +16,7 @@ class CategoryModel {
     }
   }
 
-  static async findOne(id: String) {
+  static async findOne(id: String): Promise<CategoryInterface | null> {
     try {
       const category = await Category.findById(id).populate("_posts");
       return category;
