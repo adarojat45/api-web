@@ -41,3 +41,30 @@ export interface PostListOutputInterface {
   updatedAt: Date;
   categories?: CategoryListOutputInterface[];
 }
+
+export interface PostDetailInputInterface {
+  _id: ObjectId;
+  name: string;
+  slug: string;
+  excerpt: string;
+  tags: string[];
+  isMarkdown: boolean;
+  views: number;
+  createdAt: Date;
+  updatedAt: Date;
+  _categories: CategoryInterface[];
+}
+
+export interface PostDetailOutputInterface {
+  id: ObjectId;
+  name: string;
+  slug: string;
+  excerpt: string;
+  description: string;
+  tags: string[];
+  isMarkdown: boolean;
+  views: number;
+  createdAt: Date;
+  updatedAt: Date;
+  categories?: CategoryListOutputInterface[];
+}

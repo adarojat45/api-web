@@ -17,8 +17,6 @@ class CategoryTransformer {
       id: "_id",
       name: "name",
       slug: "slug",
-      isActive: "isActive",
-      isDeleted: "isDeleted",
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     });
@@ -35,8 +33,6 @@ class CategoryTransformer {
       id: "_id",
       name: "name",
       slug: "slug",
-      isActive: "isActive",
-      isDeleted: "isDeleted",
       createdAt: "createdAt",
       updatedAt: "updatedAt",
       posts: ({ _posts }) => {
