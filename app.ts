@@ -1,10 +1,10 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+dotenv.config();
 import cors from "cors";
 import router from "./routes/index";
 import mongoConnect from "./config/mongoConnect";
 
-dotenv.config();
 const app: Express = express();
 const PORT = process.env.PORT;
 
