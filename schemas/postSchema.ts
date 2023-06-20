@@ -1,8 +1,7 @@
 import { Schema, Types } from "mongoose";
-import { PostInterface } from "../interfaces/postInterfaces";
 import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-const postSchema = new Schema<PostInterface>({
+const postSchema = new Schema({
   name: {
     type: String,
     required: true,

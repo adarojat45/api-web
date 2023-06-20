@@ -2,14 +2,35 @@ import { NextFunction, Request, Response } from "express";
 import PostModel from "../models/PostModel";
 import PostTransformer from "../transformers/PostTransformer";
 import algolia from "../services/algolia";
+import { PaginateOptionInterface } from "../interfaces/paginateInterface";
 
 class PostController {
-  static async getPosts(_: Request, res: Response, next: NextFunction) {
+  static async getPosts(req: Request, res: Response, next: NextFunction) {
     try {
-      const posts = await PostModel.findAll();
-      const postTransformed = PostTransformer.list(posts);
-      res.status(200).json(postTransformed);
+      let skip: number = 0;
+      let { page = 1, limit = 10 } = req.query;
+
+      let option: PaginateOptionInterface = {
+        page: Number(page),
+        limit: Number(limit),
+        skip,
+      };
+
+      if (!page) option = { ...option, page: 1 };
+
+      if (limit) option = { ...option, limit: Number(limit) };
+
+      if (page)
+        option = {
+          ...option,
+          skip: Number(limit) * Number(page) - Number(limit),
+        };
+
+      const { docs, ...rest } = await PostModel.paginate(option);
+      const postsTransformed = PostTransformer.list(docs);
+      res.status(200).json({ posts: postsTransformed, metaData: rest });
     } catch (err) {
+      console.log(err, "err");
       next(err);
     }
   }
