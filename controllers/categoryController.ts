@@ -1,12 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import CategoryModel from "../models/CategoryModel";
 import CategoryTransformer from "../transformers/CategoryTransformer";
+import {
+  CategoryListOutputInterface,
+  CategoryDetailOutputInterface,
+  CategoryInterface,
+} from "../interfaces/categoryInterface";
 
 class CategoryController {
   static async getCategories(_: Request, res: Response, next: NextFunction) {
     try {
-      const categories = await CategoryModel.findAll();
-      const categoriesTransformed = CategoryTransformer.list(categories);
+      const categories: CategoryInterface[] = await CategoryModel.findAll();
+      const categoriesTransformed: CategoryListOutputInterface[] =
+        CategoryTransformer.list(categories);
 
       res.status(200).json(categoriesTransformed);
     } catch (err) {
@@ -16,8 +22,10 @@ class CategoryController {
 
   static async getCategory(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const category = await CategoryModel.findOne(id);
+      const { slug } = req.params;
+      const category: CategoryInterface | null = await CategoryModel.findOne(
+        slug
+      );
 
       if (!category)
         throw {
@@ -26,7 +34,8 @@ class CategoryController {
           message: "Category not found",
         };
 
-      const categoryTransformed = CategoryTransformer.detail(category);
+      const categoryTransformed: CategoryDetailOutputInterface =
+        CategoryTransformer.detail(category);
       return res.status(200).json(categoryTransformed);
     } catch (err) {
       next(err);

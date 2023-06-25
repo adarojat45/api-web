@@ -4,6 +4,6 @@ import CategoryController from "../controllers/CategoryController";
 const categoryRouter = Router();
 
 categoryRouter.get("/", CategoryController.getCategories);
-categoryRouter.get("/:id", CategoryController.getCategory);
+categoryRouter.get("/:slug", CategoryController.getCategory);
 
 export default categoryRouter;

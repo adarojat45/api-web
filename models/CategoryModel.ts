@@ -2,7 +2,7 @@ import CategorySchema from "../schemas/categorySchema";
 import { model } from "mongoose";
 import { CategoryInterface } from "../interfaces/categoryInterface";
 
-const Category = model<CategoryInterface>("Category", CategorySchema);
+export const Category = model<CategoryInterface>("Category", CategorySchema);
 
 class CategoryModel {
   static async findAll(): Promise<CategoryInterface[]> {
@@ -16,9 +16,11 @@ class CategoryModel {
     }
   }
 
-  static async findOne(id: String): Promise<CategoryInterface | null> {
+  static async findOne(slug: string): Promise<CategoryInterface | null> {
     try {
-      const category = await Category.findById(id).populate("_posts");
+      const category = await Category.findOne({ slug: slug }).populate(
+        "_posts"
+      );
       return category;
     } catch (err) {
       throw err;

@@ -3,6 +3,11 @@ import PostModel from "../models/PostModel";
 import PostTransformer from "../transformers/PostTransformer";
 import algolia from "../services/algolia";
 import { PaginateOptionInterface } from "../interfaces/paginateInterface";
+import {
+  PostListOutputInterface,
+  PostDetailOutputInterface,
+  PostInterface,
+} from "../interfaces/postInterfaces";
 
 class PostController {
   static async getPosts(req: Request, res: Response, next: NextFunction) {
@@ -26,11 +31,12 @@ class PostController {
           skip: Number(limit) * Number(page) - Number(limit),
         };
 
-      const { docs, ...rest } = await PostModel.paginate(option);
-      const postsTransformed = PostTransformer.list(docs);
+      const { docs, ...rest } = await PostModel.paginate(null, option);
+      const postsTransformed: PostListOutputInterface[] =
+        PostTransformer.list(docs);
+
       res.status(200).json({ posts: postsTransformed, metaData: rest });
     } catch (err) {
-      console.log(err, "err");
       next(err);
     }
   }
@@ -38,13 +44,28 @@ class PostController {
   static async getPost(req: Request, res: Response, next: NextFunction) {
     try {
       const { slug } = req.params;
-      const post = await PostModel.findOne(slug);
+      const post: PostInterface | null = await PostModel.findOne(slug);
 
       if (!post)
         throw { name: "NotFound", code: 404, message: "Post not found" };
 
-      const postTransformed = PostTransformer.detail(post);
-      res.status(200).json(postTransformed);
+      const postTransformed: PostDetailOutputInterface =
+        PostTransformer.detail(post);
+
+      const { docs } = await PostModel.paginate(
+        {
+          tags: { $in: postTransformed.tags },
+        },
+        {}
+      );
+
+      const postsTransformed: PostListOutputInterface[] =
+        PostTransformer.list(docs);
+
+      res.status(200).json({
+        ...postTransformed,
+        relatedPosts: postsTransformed,
+      });
     } catch (err) {
       next(err);
     }

@@ -3,7 +3,7 @@ import { PaginateOptionInterface } from "../interfaces/paginateInterface";
 import { PostInterface } from "../interfaces/postInterfaces";
 import postSchema from "../schemas/postSchema";
 
-const Post = model("Post", postSchema);
+export const Post = model("Post", postSchema);
 
 class PostModel {
   static async findAll(): Promise<PostInterface[]> {
@@ -30,11 +30,12 @@ class PostModel {
   }
 
   static async paginate(
-    option: PaginateOptionInterface
+    query: any,
+    option: any
   ): Promise<{ docs: PostInterface[] }> {
     try {
       const postAggregate = Post.aggregate([
-        { $match: { isDeleted: false, isActive: true } },
+        { $match: { ...query, isDeleted: false, isActive: true } },
         {
           $lookup: {
             from: "categories",
