@@ -2,7 +2,7 @@ import request from "supertest";
 import dotenv from "dotenv";
 dotenv.config();
 import app from "../app";
-import { Category } from "../models/CategoryModel";
+import CategoryModel, { Category } from "../models/CategoryModel";
 import { mongoConnect, mongoDisconnect } from "../config/mongoose";
 import { CategoryInterface } from "../interfaces/categoryInterface";
 
@@ -22,6 +22,10 @@ beforeAll(async () => {
   }
   const newCategories = await Category.create(categoriesPayload);
   categories = newCategories;
+});
+
+beforeEach(() => {
+  jest.restoreAllMocks();
 });
 
 afterAll(async () => {
@@ -44,6 +48,21 @@ describe("category test cases", () => {
         })
         .catch((err) => {
           done(err);
+        });
+    });
+
+    test("[failed - 500] GET /categories should be return error", (done) => {
+      jest.spyOn(CategoryModel, "findAll").mockRejectedValue("Error");
+
+      request(app)
+        .get("/categories")
+        .then(({ body, status }) => {
+          expect(status).toBe(500);
+          expect(body).toEqual(expect.any(Object));
+          expect(body).toHaveProperty("name", "InternalServerError");
+          expect(body).toHaveProperty("messages");
+          expect(body.messages).toEqual(expect.any(Array));
+          done();
         });
     });
   });

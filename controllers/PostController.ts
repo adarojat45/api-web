@@ -21,7 +21,7 @@ class PostController {
         skip,
       };
 
-      if (!page) option = { ...option, page: 1 };
+      //      if (!page) option = { ...option, page: 1 };
 
       if (limit) option = { ...option, limit: Number(limit) };
 
@@ -77,14 +77,9 @@ class PostController {
 
       if (!q) throw { code: 400, name: "BadRequest", message: "q is required" };
 
-      const index = algolia.initIndex("posts");
-      const { hits } = await index.search(String(q));
-      const posts = hits.map((hit) => {
-        const { _highlightResult, objectID, ...rest } = hit;
-        return rest;
-      });
+      const posts = await PostModel.search(String(q));
 
-      res.status(200).json(posts);
+      res.status(200).json({ posts });
     } catch (err) {
       next(err);
     }

@@ -2,7 +2,7 @@ import request from "supertest";
 import dotenv from "dotenv";
 dotenv.config();
 import app from "../app";
-import { Post } from "../models/PostModel";
+import PostModel, { Post } from "../models/PostModel";
 import { mongoConnect, mongoDisconnect } from "../config/mongoose";
 import { PostInterface } from "../interfaces/postInterfaces";
 
@@ -27,6 +27,10 @@ beforeAll(async () => {
   }
   const newPosts = await Post.create(postsPayload);
   posts = newPosts;
+});
+
+beforeEach(() => {
+  jest.restoreAllMocks();
 });
 
 afterAll(async () => {
@@ -105,6 +109,74 @@ describe("Post test cases", () => {
         })
         .catch((err) => {
           done(err);
+        });
+    });
+
+    test("[failed - 500] GET /posts should be return error", (done) => {
+      jest.spyOn(PostModel, "paginate").mockRejectedValue("Error");
+
+      request(app)
+        .get("/posts")
+        .then(({ body, status }) => {
+          expect(status).toBe(500);
+          expect(body).toEqual(expect.any(Object));
+          expect(body).toHaveProperty("name", "InternalServerError");
+          expect(body).toHaveProperty("messages");
+          expect(body.messages).toEqual(expect.any(Array));
+          done();
+        });
+    });
+  });
+
+  describe("GET /posts/search", () => {
+    test("[success - 200] GET /posts/search should be return an array of object with some object property", (done) => {
+      const { _id, name, excerpt, tags, slug, createdAt, updatedAt } = posts[0];
+      jest.spyOn(PostModel, "search").mockResolvedValue([
+        {
+          id: _id,
+          slug,
+          name,
+          excerpt,
+          tags,
+          createdAt,
+          updatedAt,
+          categories: [],
+        },
+      ]);
+
+      request(app)
+        .get("/posts/search?q=test")
+        .then(({ body, status }) => {
+          const { posts } = body;
+          expect(status).toBe(200);
+          expect(posts).toEqual(expect.any(Array));
+          expect(posts.length).toBe(1);
+          expect(posts[0]).toHaveProperty("id");
+          expect(posts[0]).toHaveProperty("name");
+          expect(posts[0]).toHaveProperty("excerpt");
+          expect(posts[0]).toHaveProperty("tags");
+          expect(posts[0].tags).toEqual(expect.any(Array));
+          expect(posts[0].tags[0]).toEqual(expect.any(String));
+          expect(posts[0]).toHaveProperty("categories");
+          expect(posts[0].categories).toEqual(expect.any(Array));
+          expect(posts[0]).not.toHaveProperty("description");
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
+    });
+
+    test("[failed - 400] GET /posts/search should be return error", (done) => {
+      request(app)
+        .get("/posts/search")
+        .then(({ body, status }) => {
+          expect(status).toBe(400);
+          expect(body).toEqual(expect.any(Object));
+          expect(body).toHaveProperty("name", "BadRequest");
+          expect(body).toHaveProperty("messages");
+          expect(body.messages).toEqual(expect.any(Array));
+          done();
         });
     });
   });

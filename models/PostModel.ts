@@ -1,7 +1,11 @@
 import { model } from "mongoose";
 import { PaginateOptionInterface } from "../interfaces/paginateInterface";
-import { PostInterface } from "../interfaces/postInterfaces";
+import {
+  PostInterface,
+  PostListOutputInterface,
+} from "../interfaces/postInterfaces";
 import postSchema from "../schemas/postSchema";
+import algolia from "../services/algolia";
 
 export const Post = model("Post", postSchema);
 
@@ -52,6 +56,22 @@ class PostModel {
       });
     } catch (error) {
       throw error;
+    }
+  }
+
+  static async search(q: string) {
+    try {
+      const index = algolia.initIndex("posts");
+      let { hits } = await index.search<PostListOutputInterface>(String(q));
+
+      let posts = hits?.map((hit) => {
+        const { _highlightResult, objectID, ...rest } = hit;
+        return rest;
+      });
+
+      return posts;
+    } catch (err) {
+      throw err;
     }
   }
 }
